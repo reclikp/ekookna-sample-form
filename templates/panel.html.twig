@@ -9,18 +9,20 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Zgłoszenie</th>
+                <th scope="col">Adres</th>
+                <th scope="col">Utworzone</th>
                 <th scope="col">Akcje</th>
             </tr>
         </thead>
         <tbody>
             {% for request in requests %}
                 <tr>
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{ request }}</td>
+                    <th scope="row">{{ request.id }}</th>
+                    <td>{{ request.address }}</td>
+                    <td>{{ request.createdOn|date('d-m-Y h:m:s') }}</td>
                     <td>
-                        <a href="/admin/request/1" class="btn btn-dark">Wyświetl</a>
-                        <a href="/admin/request/delete/1" class="btn btn-dark">Usuń</a>
+                        <a href="/admin/request/{{ request.id }}" class="btn btn-dark">Wyświetl</a>
+                        <a href="/admin/request/delete/{{ request.id }}" class="btn btn-dark">Usuń</a>
                     </td>
                 </tr>
             {% endfor %}

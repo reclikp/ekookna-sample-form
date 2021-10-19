@@ -11,3 +11,5 @@
 
 workspace.code-workspace
 .env
+
+/public/uploads

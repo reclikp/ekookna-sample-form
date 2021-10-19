@@ -37,6 +37,11 @@ class Request
      */
     private $created_on;
 
+    public function __construct()
+    {
+        $this->created_on = new \DateTime;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

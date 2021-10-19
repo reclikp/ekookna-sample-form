@@ -1,22 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nowe zgłoszenie{% endblock %}
-{% block stylesheets %}
-    <style>
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        form .description {
-            width: 100%; 
-            padding: .6rem; 
-            resize: none; 
-            overflow: hidden;
-        }
-    </style>
-{% endblock %}
+{% block title %}Zgłoszenie #{{ request.id }}{% endblock %}
 
 {% block body %}
+    <a href="/admin" class="btn btn-dark">Powrót</a>
+
     <main class="w-50">
         <p class="mt-4 display-6">Zgłoś nowy przystanek</p>
 
@@ -45,4 +33,12 @@
             {{ form_row(form.submit, {'attr': {'class': 'mt-4 btn btn-primary'}}) }}
         {{ form_end(form) }}
     </main>
+
+    <h1>Zgłoszenie numer {{ request.id }}</h1>
+    <p>{{ request.address }}</p>
+    <p>{{ request.description }}</p>
+    {% for attachment in request.attachments %}
+        <p>{{ attachment }}</p>
+    {% endfor %}
+    <p>{{ request.createdOn|date('d-m-Y h:m:s') }}</p>
 {% endblock %}
