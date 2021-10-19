@@ -10,3 +10,4 @@
 ###< symfony/framework-bundle ###
 
 workspace.code-workspace
+.env
