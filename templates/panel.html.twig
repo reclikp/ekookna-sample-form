@@ -1,13 +1,16 @@
 {% extends 'base.html.twig' %}
+{% set asc_or_desc = order == 'ASC' ? 'DESC' : 'ASC' %}
+{% set up_or_down = order == 'ASC' ? 'up' : 'down' %}
 
 {% block title %}Panel administratora{% endblock %}
 
 {% block stylesheets %}
     <style>
-        .link-sort {
+        th a {
             width: 100%;
             padding: 0;
             margin: 0;
+            text-decoration: none !important;
         }
     </style>
 {% endblock %}
@@ -18,12 +21,22 @@
     <table class="table table-dark table-striped">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Adres</th>
-                <th scope="col">Zgłaszający</th>
-                <th scope="col">Utworzone</th>
+                <th scope="col">
+                    <a href="/admin/id/{{ asc_or_desc }}"># <i class="{{ (column == 'id') ? ['bi bi-caret-', up_or_down, '-fill']|join : '' }}"></i></a>
+                </th>
+                <th scope="col">
+                    <a href="/admin/address/{{ asc_or_desc }}">Adres <i class="{{ (column == 'address') ? ['bi bi-caret-', up_or_down, '-fill']|join : '' }}"></i></a>
+                </th>
+                <th scope="col">
+                    <a href="/admin/userID/{{ asc_or_desc }}">Zgłaszający <i class="{{ (column == 'userID') ? ['bi bi-caret-', up_or_down, '-fill']|join : '' }}"></i></a>
+                </th>
+                <th scope="col">
+                    <a href="/admin/created_on/{{ asc_or_desc }}">Utworzone <i class="{{ (column == 'created_on') ? ['bi bi-caret-', up_or_down, '-fill']|join : '' }}"></i></a>
+                </th>
                 <th scope="col" class="text-center">Akcje</th>
-                <th scope="col" class="text-center">Status</th>
+                <th scope="col" class="text-center">
+                    <a href="/admin/status/{{ asc_or_desc }}">Status <i class="{{ (column == 'status') ? ['bi bi-caret-', up_or_down, '-fill']|join : '' }}"></i></a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -35,8 +48,8 @@
                     <td>Jan Kowalski #{{ request.userID }}</td>
                     <td>{{ request.createdOn|date('d-m-Y h:m:s') }}</td>
                     <td class="text-center">
-                        <a href="/admin/request/{{ request.id }}" class="btn btn-dark">Wyświetl</a>
-                        <a href="/admin/request/delete/{{ request.id }}" class="btn btn-danger">Usuń</a>
+                        <a href="{{ path('admin_request', {'id': request.id}) }}" class="btn btn-dark">Wyświetl</a>
+                        <a href="{{ path('admin_request', {'id': request.id}) }}" class="btn btn-danger">Usuń</a>
                     </td>
                     <td class="fs-3 lh-1 text-center">
                         {% if request.status == 'resolved' %}

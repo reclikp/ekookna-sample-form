@@ -41,6 +41,10 @@
                         Załącznik nr {{ loop.index }}
                         <a href="/uploads/{{ attachment }}" target="_blank" class="btn btn-dark">Zobacz</a>
                     </li>
+                {% else %}
+                    <li class="list-group-item">
+                        Brak załączników
+                    </li>
                 {% endfor %}
             </ul>
 

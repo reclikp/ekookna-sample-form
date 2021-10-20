@@ -106,17 +106,7 @@ class MainController extends AbstractController {
     }
 
     /**
-     * @Route("/admin")
-     * @Method({"GET", "POST"})
-     */
-    public function admin() {
-        $requests = $this->getDoctrine()->getRepository(RequestEntity::class)->findAll();
-
-        return $this->render('panel.html.twig', array('requests' => $requests));
-    }
-
-    /**
-     * @Route("/admin/request/{id}")
+     * @Route("/admin/request/{id}", name="admin_request", requirements={"id"="\d+"})
      */
     public function request(Request $req, $id) {
         $request = $this->getDoctrine()->getRepository(RequestEntity::class)->find($id); 
@@ -131,6 +121,20 @@ class MainController extends AbstractController {
 
         return $this->render('request.html.twig', array(
             'request' => $request
+        ));
+    }
+
+    /**
+     * @Route("/admin/{column}/{order}", name="admin_request_list")
+     * @Method({"GET", "POST"})
+     */
+    public function admin($column = 'status', $order = 'ASC') {
+        $requests = $this->getDoctrine()->getRepository(RequestEntity::class)->findBy(array(), array($column => $order));
+
+        return $this->render('panel.html.twig', array(
+            'requests' => $requests,
+            'column' => $column,
+            'order' => $order
         ));
     }
 }
