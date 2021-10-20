@@ -37,6 +37,11 @@ class Request
      */
     private $created_on;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $userID;
+
     public function __construct()
     {
         $this->created_on = new \DateTime;
@@ -91,6 +96,18 @@ class Request
     public function setCreatedOn(\DateTimeInterface $created_on): self
     {
         $this->created_on = $created_on;
+
+        return $this;
+    }
+
+    public function getUserID(): ?int
+    {
+        return $this->userID;
+    }
+
+    public function setUserID(int $userID): self
+    {
+        $this->userID = $userID;
 
         return $this;
     }

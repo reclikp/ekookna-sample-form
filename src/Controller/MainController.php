@@ -118,9 +118,11 @@ class MainController extends AbstractController {
     /**
      * @Route("/admin/request/{id}")
      */
-    public function request($id) {
-        $request = $this->getDoctrine()->getRepository(RequestEntity::class)->find($id);
+    public function request(Request $req, $id) {
+        $request = $this->getDoctrine()->getRepository(RequestEntity::class)->find($id);       
 
-        return $this->render('request.html.twig', array('request' => $request));
+        return $this->render('request.html.twig', array(
+            'request' => $request
+        ));
     }
 }

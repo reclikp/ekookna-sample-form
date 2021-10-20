@@ -2,43 +2,49 @@
 
 {% block title %}Zgłoszenie #{{ request.id }}{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        form .disabled{
+            color:#868e96 !important;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form .description {
+            width: 100%; 
+            padding: .6rem; 
+            resize: none; 
+            overflow: hidden;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <a href="/admin" class="btn btn-dark">Powrót</a>
-
     <main class="w-50">
-        <p class="mt-4 display-6">Zgłoś nowy przystanek</p>
+        <div class="d-flex flex-row align-items-center justify-content-between mt-4 mb-4">
+            <p class="display-6 mb-0">Zgłoszenie #{{ request.id }}</p>
+            <a href="/admin" class="btn btn-dark">Powrót</a>
+        </div>
 
-        {{ form_start(form) }}
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-dismissible alert-success w-100">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    {{ message }}
-                </div>
-            {% endfor %}
-            {% if form_errors(form) != null %}
-                <div class="alert alert-dismissible alert-danger mt-4 mb-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    {{ form_errors(form) }}
-                </div>
-            {% endif %}
+        <form>
+            <label class="form-label mt-4 required" for="form_address">Adres przystanku</label>
+            <input type="text" id="form_address" name="form[address]" class="disabled form-control" value="{{ request.address }}" readonly="">
 
-            {{ form_label(form.address, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
-            {{ form_widget(form.address) }}
-            {{ form_label(form.description, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
-            <p class="form-text text-muted">Opisz swoje zgłoszenie. Na przykład: dlaczego chcesz zgłosić ten przystanek, jak daleko znajduje się najlbiższy aktualny przystanek, itp.</p>
-            {{ form_widget(form.description, {'attr': {'class': 'description form-control', 'rows': '5', 'maxlength': '300'}}) }}
-            {{ form_label(form.attachment, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
-            <p class="form-text text-muted">Możesz przesłać maksymalnie 3 pliki.<br>Limit wielkości jednego pliku wynosi: 1MB<br>Obsługiwane formaty plików: jpg, jpeg, png.</p>
-            {{ form_widget(form.attachment, {'attr': {'class': 'form-control'}}) }}
-            {{ form_row(form.submit, {'attr': {'class': 'mt-4 btn btn-primary'}}) }}
-        {{ form_end(form) }}
-    </main>
+            <label class="form-label mt-4 required" for="form_description">Opis zgłoszenia</label>
+            <textarea id="form_description" name="form[description]" class="disabled description form-control" rows="5" readonly="">{{ request.description }}</textarea>
 
-    <h1>Zgłoszenie numer {{ request.id }}</h1>
-    <p>{{ request.address }}</p>
-    <p>{{ request.description }}</p>
-    {% for attachment in request.attachments %}
-        <p>{{ attachment }}</p>
-    {% endfor %}
-    <p>{{ request.createdOn|date('d-m-Y h:m:s') }}</p>
+            <label class="form-label mt-4" for="form_attachments">Załączniki</label>
+            <ul if="form_attachments" class="list-group">
+                {% for attachment in request.attachments %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Załącznik nr {{ loop.index }}
+                        <a href="/uploads/{{ attachment }}" target="_blank" class="btn btn-dark">Zobacz</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <label class="form-label mt-4" for="form_created_on">Data utworzenia</label>
+            <input type="text" id="form_created_on" name="form[created_on]" class="disabled form-control" value="{{ request.createdOn|date('d-m-Y h:m:s') }}" readonly="">
+        </form>
 {% endblock %}
