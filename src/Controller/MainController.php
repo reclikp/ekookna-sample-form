@@ -119,7 +119,15 @@ class MainController extends AbstractController {
      * @Route("/admin/request/{id}")
      */
     public function request(Request $req, $id) {
-        $request = $this->getDoctrine()->getRepository(RequestEntity::class)->find($id);       
+        $request = $this->getDoctrine()->getRepository(RequestEntity::class)->find($id); 
+
+        if($request->getStatus() == 'new'){
+            $request->setStatus('open');
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+        }
+
 
         return $this->render('request.html.twig', array(
             'request' => $request

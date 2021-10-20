@@ -2,16 +2,28 @@
 
 {% block title %}Panel administratora{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .link-sort {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1>Jesteś w panelu administratora</h1>
+    <p class="display-6 my-4">Lista zgłoszeń</p>
 
     <table class="table table-dark table-striped">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Adres</th>
+                <th scope="col">Zgłaszający</th>
                 <th scope="col">Utworzone</th>
-                <th scope="col">Akcje</th>
+                <th scope="col" class="text-center">Akcje</th>
+                <th scope="col" class="text-center">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -19,10 +31,21 @@
                 <tr>
                     <th scope="row">{{ request.id }}</th>
                     <td>{{ request.address }}</td>
+                    {# Do zmiany na system użytkowników #}
+                    <td>Jan Kowalski #{{ request.userID }}</td>
                     <td>{{ request.createdOn|date('d-m-Y h:m:s') }}</td>
-                    <td>
+                    <td class="text-center">
                         <a href="/admin/request/{{ request.id }}" class="btn btn-dark">Wyświetl</a>
-                        <a href="/admin/request/delete/{{ request.id }}" class="btn btn-dark">Usuń</a>
+                        <a href="/admin/request/delete/{{ request.id }}" class="btn btn-danger">Usuń</a>
+                    </td>
+                    <td class="fs-3 lh-1 text-center">
+                        {% if request.status == 'resolved' %}
+                            <span class="fw-light badge bg-secondary">Zakończone</span>
+                        {% elseif request.status == 'open' %}
+                            <span class="fw-light badge bg-warning">W trakcie</span>
+                        {% else %}
+                            <span class="fw-light badge bg-success">Nowe</span>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

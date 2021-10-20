@@ -38,13 +38,24 @@ class Request
     private $created_on;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer") 
      */
     private $userID;
+    //
+    // W przyszłości do zmiany na system użytkowników.
+    //
+
+
+    /**
+     * @ORM\Column(type="string", length=8)
+     */
+    private $status;
 
     public function __construct()
     {
         $this->created_on = new \DateTime;
+        $this->status = 'new';
+        $this->userID = 1;
     }
 
     public function getId(): ?int
@@ -108,6 +119,18 @@ class Request
     public function setUserID(int $userID): self
     {
         $this->userID = $userID;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
