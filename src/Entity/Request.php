@@ -23,7 +23,7 @@ class Request
     private $address;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $description;
 
