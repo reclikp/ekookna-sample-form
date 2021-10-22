@@ -1,21 +1,48 @@
-version: '3'
+version: '3.8'
 
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-13}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
-      POSTGRES_USER: ${POSTGRES_USER:-symfony}
-    volumes:
-      - db-data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+    nginx:
+        build:
+            context: ./docker
+            dockerfile: Dockerfile-nginx
+        volumes:
+            - ./:/var/www/project/:cached
+        ports:
+            - 8080:80
+        networks:
+            - symfony
+    
+    fpm:
+        build:
+            context: ./docker
+            dockerfile: Dockerfile-php
+        environment:
+            APP_ENV: dev
+            DATABASE_URL: mysql://root:root@db/ekookna_sample_form
+        volumes:
+            - ./:/var/www/project/:cached
+        networks:
+            - symfony
 
-volumes:
-###> doctrine/doctrine-bundle ###
-  db-data:
-###< doctrine/doctrine-bundle ###
+    db: 
+        image: mariadb:10.6.4
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_DATABASE=ekookna_sample_form
+            - MYSQL_ROOT_PASSWORD=root
+        volumes:
+            #- persistent:/var/lib/mysql
+            - ./docker/build/db/:/docker-entrypoint-initdb.d/
+        networks:
+            - symfony
+
+    phpmyadmin:
+        image: phpmyadmin:latest
+        ports: 
+            - "8081:80"
+        networks:
+            - symfony
+
+networks:
+    symfony:

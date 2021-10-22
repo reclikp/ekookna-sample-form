@@ -77,7 +77,7 @@ class MainController extends AbstractController {
         if($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $request = $form->getData();
-            $destination = $this->getParameter('kernel.project_dir').'\\public\\uploads\\';
+            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/';
 
             if ($attachments = $form['attachment']->getData()) {
                 $tempAttachments = array();
