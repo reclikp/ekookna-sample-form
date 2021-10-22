@@ -40,7 +40,7 @@
             <p class="form-text text-muted">Opisz swoje zgłoszenie. Na przykład: dlaczego chcesz zgłosić ten przystanek, jak daleko znajduje się najlbiższy aktualny przystanek, itp.</p>
             {{ form_widget(form.description, {'attr': {'class': 'description form-control', 'rows': '5', 'maxlength': '300'}}) }}
             {{ form_label(form.attachment, null, {'label_attr': {'class': 'form-label mt-4'}}) }}
-            <p class="form-text text-muted">Możesz przesłać maksymalnie 3 pliki.<br>Limit wielkości jednego pliku wynosi: 1MB<br>Obsługiwane formaty plików: jpg, jpeg, png.</p>
+            <p class="form-text text-muted">Możesz przesłać maksymalnie 3 pliki.<br>Obsługiwane formaty plików: jpg, jpeg, png.</p>
             {{ form_widget(form.attachment, {'attr': {'class': 'form-control'}}) }}
             {{ form_row(form.submit, {'attr': {'class': 'mt-4 btn btn-primary'}}) }}
         {{ form_end(form) }}
